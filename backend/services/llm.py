@@ -17,17 +17,16 @@ class LLMClient(ABC):
 class GeminiLLMClient(LLMClient):
     def __init__(self) -> None:
         self.client = genai.Client(api_key=os.environ["GEMINI_API_KEY"])
-        self.model = os.getenv("GEMINI_MODEL", "gemini-2.5-flash-lite")
+        self.model = os.getenv("GEMINI_MODEL", "gemini-3.5-flash-lite")
 
     def edit(self, resume: Resume, instruction: str) -> Resume:
         response = self.client.models.generate_content(
             model=self.model,
             contents=f"Resume JSON:\n{resume.model_dump_json()}\n\nInstruction: {instruction}",
-            config=types.GenerateContentConfig(
-                system_instruction=SYSTEM_PROMPT,
-                response_mime_type="application/json",
-                response_schema=Resume,
-                temperature=0,
-            ),
+	    config=types.GenerateContentConfig(
+            system_instruction=SYSTEM_PROMPT,
+    	    response_mime_type="application/json",
+            temperature=0,
+	   ),
         )
         return Resume.model_validate_json(response.text or resume.model_dump_json())

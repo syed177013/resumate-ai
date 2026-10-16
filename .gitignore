@@ -1,5 +1,18 @@
-data/
+# Secrets
 .env
+.env.*
+!.env.example
+
+# Python environments and generated files
+.venv/
+venv/
+backend/env/
 __pycache__/
-*.pyc
+*.py[cod]
 .pytest_cache/
+
+# Local databases and generated output
+data/
+*.db
+*.sqlite
+*.sqlite3
